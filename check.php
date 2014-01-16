@@ -1,54 +1,79 @@
 <?php
+// TODO separate into controller / view and cleanly handle die conditions
 
 require_once("HTTP/Request.php");
+PEAR::setErrorHandling(PEAR_ERROR_EXCEPTION);
 
 if (!isset($_GET['uri'])) {
     die('missing uri parameter');
 }
 
-if (!preg_match('#http://mumstudents.org/.*#', $_GET['uri'])) {
-    die('sorry, only files local to mumstudents.org will be checked');
-}
+function httpGet($url) {
+	if (!preg_match('#http://mumstudents.org/.*#', $url)) {
+		throw new DomainException('Sorry, only files local to mumstudents.org '
+			. 'will be checked');
+	}
 
-function get($url) {
     $r =& new HTTP_Request($url);
-    if (!PEAR::isError($r->sendRequest()) && $r->getResponseCode() == 200) {
+    $r->sendRequest();
+	if ($r->getResponseCode() == 200) {
         return $r->getResponseBody();
-    }
-    else return "";
+	} else {
+		throw new RuntimeException('Bad reponse from server ' . $url, 
+			$r->getResponseCode());
+	}
+} 
     
+try {
+	$src = $_GET['uri'];
+	$html = httpGet($src);
+	$dom = new DOMDocument();
+	$dom->loadHTML($html);
+} catch (Exception $e) {
+	die($e->getCode() . ' ' . $e->getMessage());
 }
 
-$js = '';
-$src = $_GET['uri'];
-$html = get($src);
-$dom = new DOMDocument();
-$dom->loadHTML($html);
+// make a temporary directory for the js files
+$dirname = tempnam("/tmp", "JS_");
+unlink($dirname);
+mkdir($dirname);
 
+// find and test the different JS files
+$output = array();
+$embID = 0;
 $scriptTags = $dom->getElementsByTagName("script");
 foreach ($scriptTags as $tag) {
-    if ($tag->getAttribute("src")) {
-        $url = $tag->getAttribute("src");
-        if (preg_match("#^http://#", $url)) {
-        	$js .= get($url) . "\n";
+	$js = '';
+	$file = 'error.js';
+	$res = array();
+	try {
+		if ($tag->getAttribute("src")) {
+			$url = $tag->getAttribute("src");
+			$file = basename($url);
+			if (preg_match("#^http://#", $url)) {
+				$js .= httpGet($url);
+			} else {
+				$js .= httpGet($src . $url);
+			}
 		} else {
-			$js .= get($src . $url) . "\n";
+			$js .= trim($tag->textContent);
+			$file = 'embedded_' . ++$embID . '.js';
 		}
-    } else {
-        $js .= $tag->textContent . "\n";
-    }
+		
+		file_put_contents($dirname . '/' . $file, $js);
+		exec('/usr/local/bin/jshint '. $dirname . '/' . $file, $res);
+
+		// strip file system info, leaving just file name and message
+		$res = preg_replace('#^/tmp/JS_\w{5,10}/(.*)$#', '$1', $res);
+		$output[$file] = array('js' => $js, 'result' => $res);
+	} catch(Exception $e) {
+		$output[$file] = array('js' => $e->getCode(), 
+			'result' => array($e->getMessage()));
+	} 
 }
 
-// TODO make a temporary directory, and then place each JS file in that
-// that way the output can list the name of the each js file!
-// plus the script can delete the directory to clean up after itself
-
-$filename = tempnam("/tmp", "JS_");
-file_put_contents($filename, $js);
-$out = array();
-exec('/usr/local/bin/jshint '. $filename, $out);
-$out = preg_replace('#^/tmp/JS_\w{5,10}: (.*)$#', '$1', $out);
-exec('rm ' . $filename);
+// clean up temp files
+exec('rm -rf ' . $dirname);
 ?>
 
 <!DOCTYPE html>
@@ -58,15 +83,18 @@ exec('rm ' . $filename);
         <title></title>
     </head>
     <body>
-        <pre>
-<?php if (count($out) === 0): ?>
-Yay, all good!
-<?php else: ?>
-<?php foreach($out as $line): ?>
+	<?php foreach($output as $file => $out): ?>
+		<div><?= $file ?></div>
+		<pre><?= $out['js']?></pre>
+		<?php if ($out['result']): ?>
+			<pre>
+<?php foreach ($out['result'] as $line): ?>
 <?= $line ?>
 
-<?php endforeach ?>
-<?php endif ?>
-        </pre>
+<?php endforeach ?></pre>
+		<?php else: ?>
+		<pre>Yay, all good!</pre>
+		<?php endif ?>
+	<?php endforeach ?>
     </body>
 </html>
