@@ -9,7 +9,7 @@ if (!isset($_GET['uri'])) {
 }
 
 function httpGet($url) {
-	if (!preg_match('#http://mumstudents.org/.*#', $url)) {
+	if (!preg_match('#^http://mumstudents.org/.*$#', $url)) {
 		throw new DomainException('Sorry, only files local to mumstudents.org '
 			. 'will be checked');
 	}
@@ -50,7 +50,7 @@ foreach ($scriptTags as $tag) {
 		if ($tag->getAttribute("src")) {
 			$url = $tag->getAttribute("src");
 			$file = basename($url);
-			if (preg_match("#^http://#", $url)) {
+			if (preg_match("#^(http:)?//#", $url)) {
 				$js .= httpGet($url);
 			} else {
 				$js .= httpGet($src . $url);
