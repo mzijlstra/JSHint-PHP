@@ -1,0 +1,66 @@
+div.header {
+	padding: 0em 1em;
+	height: 100px;
+	margin-bottom: 25px;
+}
+div.header > img {
+	float: left;
+}
+div.header h1 {
+	font-family: "Arial";
+	margin-left: 120px;
+	margin-bottom: 0px;
+	padding-top: 15px;
+}
+h1 > img {
+	position: relative;
+	top: 3px;
+}
+div.header h2 {
+	margin-top: 0px;
+	margin-left: 120px;
+}
+div.container {
+	padding: 0em 1em;
+}
+div.name, .js, .result {
+	border: 1px solid black;
+	padding: 1em;
+}
+div.file .js, div.file .result {
+	border-top: none;
+}
+div.name {
+	font-weight: bold;
+	background-color: #FCDC5C;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+}
+div.result {
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+	margin-bottom: 1em;
+	white-space: pre;
+}
+div.js div {
+	white-space: pre;
+	font-family: monospace;
+	color: #555;
+}
+div.js div.line {
+	margin-right: 1em;
+	text-align: right;
+	float: left;
+	width: 3em;
+	padding-right: 1px;
+	border-right: 1px solid #DDD;
+}
+div.js div.warn {
+	background-color: #FFDDAA;
+}
+div.bad {
+	color: #cc0000;
+}
+div.good {
+	color: #00AA00;
+}

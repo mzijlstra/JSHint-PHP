@@ -1,5 +1,5 @@
 <?php
-// TODO separate into controller / view and cleanly handle die conditions
+// TODO cleanly handle die conditions
 
 require_once("HTTP/Request.php");
 PEAR::setErrorHandling(PEAR_ERROR_EXCEPTION);
@@ -34,9 +34,9 @@ try {
 }
 
 // make a temporary directory for the js files
-$dirname = tempnam("/tmp", "JS_");
-unlink($dirname);
-mkdir($dirname);
+$dirname = tempnam("/tmp", "JS_"); // creates a file not a dir
+unlink($dirname); // delete the file
+mkdir($dirname); // create the directory
 
 // find and test the different JS files
 $output = array();
@@ -53,7 +53,8 @@ foreach ($scriptTags as $tag) {
 			if (preg_match("#^(http:)?//#", $url)) {
 				$js .= httpGet($url);
 			} else {
-				$js .= httpGet($src . $url);
+				$path = preg_replace("#/[\w.]*$#", "/", $src);
+				$js .= httpGet($path . $url);
 			}
 		} else {
 			$js .= trim($tag->textContent);
@@ -64,37 +65,35 @@ foreach ($scriptTags as $tag) {
 		exec('/usr/local/bin/jshint '. $dirname . '/' . $file, $res);
 
 		// strip file system info, leaving just file name and message
-		$res = preg_replace('#^/tmp/JS_\w{5,10}/(.*)$#', '$1', $res);
-		$output[$file] = array('js' => $js, 'result' => $res);
+		$res = preg_replace('#^/tmp/JS_\w{5,10}/\w+.js: (.*)$#', '$1', $res);
+
+		// create a list of line numbers on which errors were found
+		$lines = array();
+		foreach ($res as $line) {
+			if (preg_match("/^line \d+/", $line)) {
+				$lines[] = preg_replace("/^line (\d+),.*$/", "\\1", $line);
+			}
+		}
+
+		// put it all together in the output map for this file
+		$output[$file] = array(
+			'js' => explode("\n", $js), 
+			'result' => implode("\n", $res), 
+			'lines' => $lines
+		);
 	} catch(Exception $e) {
-		$output[$file] = array('js' => $e->getCode(), 
-			'result' => array($e->getMessage()));
+		$output[$file] = array(
+			'js' => false, 
+			'result' => $e->getMessage(),
+			'lines' => array()
+		);
 	} 
 }
 
 // clean up temp files
 exec('rm -rf ' . $dirname);
+
+// show the result view
+include('result.php');
 ?>
 
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title></title>
-    </head>
-    <body>
-	<?php foreach($output as $file => $out): ?>
-		<div><?= $file ?></div>
-		<pre><?= $out['js']?></pre>
-		<?php if ($out['result']): ?>
-			<pre>
-<?php foreach ($out['result'] as $line): ?>
-<?= $line ?>
-
-<?php endforeach ?></pre>
-		<?php else: ?>
-		<pre>Yay, all good!</pre>
-		<?php endif ?>
-	<?php endforeach ?>
-    </body>
-</html>

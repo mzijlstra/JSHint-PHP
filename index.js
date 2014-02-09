@@ -1,5 +1,3 @@
-plaap = poep
-
 $(function() {
     $('#check').click(function() {
         var input = { 
