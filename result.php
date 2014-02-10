@@ -5,6 +5,28 @@
 		<link rel="shortcut icon" type="image/png" href="JS-logo.png" />
 		<link rel="stylesheet" type="text/css" href="style.css" />
         <title>Hint</title>
+		<style>
+			h1 {
+				font-family: "Arial";
+			}
+			h1 > img {
+				position: relative;
+				top: 3px;
+			}
+			div.container {
+				padding: 0em 1em;
+			}
+			div.name {
+				float: left;
+				border-bottom: none
+			}
+			div.js, div.result {
+				clear: left;
+			}
+			div.js {
+				border-bottom: none;
+			}
+		</style>
     </head>
     <body>
 
@@ -34,5 +56,10 @@
 		</div> <!-- closing file -->
 	<?php endforeach ?>
 	</div> <!-- closing container -->
+	<div class="validate">
+		<a href="http://validator.w3.org/check/referer"><img src="http://mumstudents.org/cs472/2013-09/images/w3c-html.png" alt="html validator"/></a>
+		<a href="http://jigsaw.w3.org/css-validator/check/referer"><img src="http://mumstudents.org/cs472/2013-09/images/w3c-css.png" alt="css validator"/></a>
+		<a href="http://mumstudents.org/jshint/referer.php"><img src="http://mumstudents.org/jshint/jshint-small.png" alt="js validator"/></a>
+	</div>
     </body>
 </html>

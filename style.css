@@ -7,28 +7,17 @@ div.header > img {
 	float: left;
 }
 div.header h1 {
-	font-family: "Arial";
 	margin-left: 120px;
 	margin-bottom: 0px;
 	padding-top: 15px;
-}
-h1 > img {
-	position: relative;
-	top: 3px;
 }
 div.header h2 {
 	margin-top: 0px;
 	margin-left: 120px;
 }
-div.container {
-	padding: 0em 1em;
-}
 div.name, .js, .result {
 	border: 1px solid black;
 	padding: 1em;
-}
-div.file .js, div.file .result {
-	border-top: none;
 }
 div.name {
 	font-weight: bold;
@@ -63,4 +52,8 @@ div.bad {
 }
 div.good {
 	color: #00AA00;
+}
+div.validate {
+	margin: 1em;
+	float: right;
 }
