@@ -13,6 +13,9 @@
 				position: relative;
 				top: 3px;
 			}
+			h2 {
+				margin-bottom: 0px;
+			}
 			div.container {
 				padding: 0em 1em;
 			}
@@ -26,6 +29,14 @@
 			div.js {
 				border-bottom: none;
 			}
+			div#other {
+				margin-left: 120px;
+			}
+			div#other a:link, div#other a:visited {
+				color: #555;
+				font-size: 8pt;
+				text-decoration: none;
+			}
 		</style>
     </head>
     <body>
@@ -34,6 +45,7 @@
 		<img src="MUM-logo.png" alt="MUM logo" />
 		<h1><img src="jshint.png" alt="JS Hint logo" height="50"/>&nbsp;Result:</h1>
 		<h2><?= $src ?></h2>
+		<div id="other"><a href="http://mumstudents.org/jshint/">Validate a different page?</a></div>
 	</div>
 	<div class="container">
 	<?php foreach($output as $file => $out): ?>
@@ -44,12 +56,12 @@
 				<?php for ($i = 0; $i < count($out['js']); $i++): ?>
 					<?php $line = $out['js'][$i]; ?>
 					<div class="line"><?= $i+1 ?></div>
-					<div <?= in_array($i + 1, $out['lines']) ? 'class="warn"' : ''?>><?= $line ?>&nbsp;</div>
+					<div <?= in_array($i + 1, $out['lines']) ? 'class="warn"' : ''?>><?= htmlspecialchars($line) ?>&nbsp;</div>
 				<?php endfor ?>
 				</div>
 			<?php endif ?>
 			<?php if ($out['result']): ?>
-				<div class="result bad"><?=$out['result'] ?></div>
+				<div class="result bad"><?= htmlspecialchars($out['result']) ?></div>
 			<?php else: ?>
 				<div class="result good">No errors found!</div>
 			<?php endif ?>

@@ -8,11 +8,11 @@
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
         <script src="index.js"></script>
 		<style>
-			body {
-				font-family: Arial;
-			}
 			div.container {
 				margin: 0em 1em;
+			}
+			div#other {
+				line-height: 10px;
 			}
 			h2 {
 				margin-left: 1em;
@@ -58,16 +58,15 @@
     <body>
 	<div class="header">
 		<img src="MUM-logo.png" alt="MUM logo" />
-		<h1>MUMStudents.org <br />
-			<img src="jshint.png" alt="JS Hint logo" height="50"/> 
-		</h1>
+		<h1>MUMStudents.org</h1>
+		<div id="other"><a href="http://jshint.com/"><img src="jshint.png" alt="JS Hint logo" height="50"/><br />more about jshint</a></div>
 	</div>
 
 	<h2>3 Ways to Validate: </h2>
 	<div class="container">
 		<div class="num">1</div>
 		<div class="way">
-			Include this link at the bottom of each page:<br />
+			Include this link on your page:<br />
 			<code><?= htmlspecialchars('<a href="http://mumstudents.org/jshint/referer.php"><img src="http://mumstudents.org/jshint/jshint-small.png" alt="js validator"/></a>')?></code>
 		</div>
 

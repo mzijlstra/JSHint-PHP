@@ -1,12 +1,8 @@
 <?php
-// TODO cleanly handle die conditions
+// TODO work with uri's ending in .js 
 
 require_once("HTTP/Request.php");
 PEAR::setErrorHandling(PEAR_ERROR_EXCEPTION);
-
-if (!isset($_GET['uri'])) {
-    die('missing uri parameter');
-}
 
 function httpGet($url) {
 	if (!preg_match('#^http://mumstudents.org/.*$#', $url)) {
@@ -25,12 +21,17 @@ function httpGet($url) {
 } 
     
 try {
-	$src = $_GET['uri'];
+	$src = filter_input(INPUT_GET, 'uri', FILTER_VALIDATE_URL); 
+	if (!$src) {
+		throw new Exception("Missing or invalid uri parameter");
+	}
 	$html = httpGet($src);
 	$dom = new DOMDocument();
 	$dom->loadHTML($html);
 } catch (Exception $e) {
-	die($e->getCode() . ' ' . $e->getMessage());
+	$error = $e->getMessage();
+	include("error.php");
+	exit;
 }
 
 // make a temporary directory for the js files

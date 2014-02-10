@@ -16,7 +16,11 @@ $filename = tempnam("/tmp", "JS_");
 file_put_contents($filename, $js);
 $out = array();
 exec('/usr/local/bin/jshint '. $filename, $out);
+unlink($filename);
 $out = preg_replace('#^/tmp/JS_\w{5,10}: (.*)$#', '$1', $out);
+if (!$out) {
+	$out = array('No errors found!');
+}
 ?>
 
 {
