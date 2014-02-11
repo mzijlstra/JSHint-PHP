@@ -43,7 +43,6 @@
 		</style>
     </head>
     <body>
-	<pre><?= var_dump($output)?></pre>
 	<div class="header">
 		<img src="MUM-logo.png" alt="MUM logo" />
 		<h1><img src="jshint.png" alt="JS Hint logo" height="50"/>&nbsp;Result:</h1>
