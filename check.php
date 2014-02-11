@@ -98,6 +98,6 @@ foreach ($scriptTags as $tag) {
 exec('rm -rf ' . $dirname);
 
 // show the result view
-include('result2.php');
+include('result.php');
 ?>
 
