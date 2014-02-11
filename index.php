@@ -59,7 +59,7 @@
 	<div class="header">
 		<img src="MUM-logo.png" alt="MUM logo" />
 		<h1>MUMStudents.org</h1>
-		<div id="other"><a href="http://jshint.com/"><img src="jshint.png" alt="JS Hint logo" height="50"/><br />more about jshint</a></div>
+		<div id="other"><a href="http://jshint.com/about/"><img src="jshint.png" alt="JS Hint logo" height="50"/><br />more about jshint</a></div>
 	</div>
 
 	<h2>3 Ways to Validate: </h2>

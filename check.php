@@ -1,5 +1,6 @@
 <?php
 // TODO work with uri's ending in .js 
+// TODO rework it so we can highlight multiple columns in one line
 
 require_once("HTTP/Request.php");
 PEAR::setErrorHandling(PEAR_ERROR_EXCEPTION);
@@ -72,7 +73,9 @@ foreach ($scriptTags as $tag) {
 		$lines = array();
 		foreach ($res as $line) {
 			if (preg_match("/^line \d+/", $line)) {
-				$lines[] = preg_replace("/^line (\d+),.*$/", "\\1", $line);
+				$nums = preg_replace("/^line (\d+), col (\d+).*$/", "\\1:\\2", $line);
+				list($row, $col) = explode(":", $nums);
+				$lines[$row] = $col;
 			}
 		}
 
@@ -95,6 +98,6 @@ foreach ($scriptTags as $tag) {
 exec('rm -rf ' . $dirname);
 
 // show the result view
-include('result.php');
+include('result2.php');
 ?>
 

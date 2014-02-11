@@ -37,10 +37,13 @@
 				font-size: 8pt;
 				text-decoration: none;
 			}
+			span.error {
+				background-color: #F77;
+			}
 		</style>
     </head>
     <body>
-
+	<pre><?= var_dump($output)?></pre>
 	<div class="header">
 		<img src="MUM-logo.png" alt="MUM logo" />
 		<h1><img src="jshint.png" alt="JS Hint logo" height="50"/>&nbsp;Result:</h1>
@@ -55,8 +58,13 @@
 				<div class="js">
 				<?php for ($i = 0; $i < count($out['js']); $i++): ?>
 					<?php $line = $out['js'][$i]; ?>
-					<div class="line"><?= $i+1 ?></div>
-					<div <?= in_array($i + 1, $out['lines']) ? 'class="warn"' : ''?>><?= htmlspecialchars($line) ?>&nbsp;</div>
+						<?php if (!isset($out['lines'][$i + 1])) : ?>
+							<div class="line"><?= $i+1 ?></div>
+							<div><?= htmlspecialchars($line) ?>&nbsp;</div>
+						<?php else : ?>
+							<div class="line"><?= $i+1 ?></div>
+							<div class="warn"><?php for ($col = 0; $col < strlen($line); $col++): ?><?php if ($col != $out['lines'][$i +1] - 1): ?><?= htmlspecialchars($line[$col]) ?><?php else: ?><span class="error"><?= htmlspecialchars($line[$col]) ?></span><?php endif; ?><?php endfor; ?></div>
+						<?php endif ?>
 				<?php endfor ?>
 				</div>
 			<?php endif ?>
