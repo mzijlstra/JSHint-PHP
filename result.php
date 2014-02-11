@@ -59,7 +59,7 @@
 					<?php $line = $out['js'][$i]; ?>
 						<?php if (!isset($out['lines'][$i + 1])) : ?>
 							<div class="line"><?= $i+1 ?></div>
-							<div><?= htmlspecialchars($line) ?>&nbsp;</div>
+							<div>&nbsp;<?= htmlspecialchars($line) ?></div>
 						<?php else : ?>
 							<div class="line"><?= $i+1 ?></div>
 							<div class="warn"><?php for ($col = 0; $col < strlen($line); $col++): ?><?php if ($col != $out['lines'][$i +1] - 1): ?><?= htmlspecialchars($line[$col]) ?><?php else: ?><span class="error"><?= htmlspecialchars($line[$col]) ?></span><?php endif; ?><?php endfor; ?></div>

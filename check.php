@@ -6,7 +6,7 @@ require_once("HTTP/Request.php");
 PEAR::setErrorHandling(PEAR_ERROR_EXCEPTION);
 
 function httpGet($url) {
-	if (!preg_match('#^http://mumstudents.org/.*$#', $url)) {
+	if (!preg_match('#^http://(www\.)?mumstudents.org/.*$#', $url)) {
 		throw new DomainException('Sorry, only files local to mumstudents.org '
 			. 'will be checked');
 	}
@@ -52,7 +52,7 @@ foreach ($scriptTags as $tag) {
 		if ($tag->getAttribute("src")) {
 			$url = $tag->getAttribute("src");
 			$file = basename($url);
-			if (preg_match("#^(http:)?//#", $url)) {
+			if (preg_match("#^(http:|https:)?//#", $url)) {
 				$js .= httpGet($url);
 			} else {
 				$path = preg_replace("#/[\w.]*$#", "/", $src);
