@@ -15,7 +15,7 @@ $js .= $_POST['jsText'];
 $filename = tempnam("/tmp", "JS_");
 file_put_contents($filename, $js);
 $out = array();
-exec('/usr/local/bin/jshint '. $filename, $out);
+exec('/usr/local/bin/jshint --config=/var/www/jshint/jshint.rc '. $filename, $out);
 unlink($filename);
 $out = preg_replace('#^/tmp/JS_\w{5,10}: (.*)$#', '$1', $out);
 if (!$out) {

@@ -1,0 +1,10 @@
+{
+	"undef": true,
+	"unused": true,
+	"strict": true,
+	"browser": true,
+	"globals": { 
+		"jQuery": false,
+		"$": false
+	}
+}
