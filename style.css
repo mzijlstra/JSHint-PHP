@@ -38,10 +38,19 @@ div.name {
 	border-top-right-radius: 5px;
 }
 div.result {
+	white-space: pre;
+	border-bottom: none;
+}
+div.file, div.js {
 	border-bottom-left-radius: 5px;
 	border-bottom-right-radius: 5px;
+}
+div.file {
+	border-bottom: 1px solid black;
 	margin-bottom: 1em;
-	white-space: pre;
+}
+div.js {
+	border-bottom: none;
 }
 div.js div {
 	white-space: pre;

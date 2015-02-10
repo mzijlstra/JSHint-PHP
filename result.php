@@ -26,9 +26,6 @@
 			div.js, div.result {
 				clear: left;
 			}
-			div.js {
-				border-bottom: none;
-			}
 			div#other {
 				margin-left: 120px;
 			}
@@ -53,6 +50,11 @@
 	<?php foreach($output as $file => $out): ?>
 		<div class="file">
 			<div class="name"><?= $file ?></div>
+			<?php if ($out['result']): ?>
+				<div class="result bad"><?= htmlspecialchars($out['result']) ?></div>
+			<?php else: ?>
+				<div class="result good">No errors found!</div>
+			<?php endif ?>
 			<?php if ($out['js']): ?>
 				<div class="js">
 				<?php for ($i = 0; $i < count($out['js']); $i++): ?>
@@ -66,11 +68,6 @@
 						<?php endif ?>
 				<?php endfor ?>
 				</div>
-			<?php endif ?>
-			<?php if ($out['result']): ?>
-				<div class="result bad"><?= htmlspecialchars($out['result']) ?></div>
-			<?php else: ?>
-				<div class="result good">No errors found!</div>
 			<?php endif ?>
 		</div> <!-- closing file -->
 	<?php endforeach ?>

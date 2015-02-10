@@ -55,7 +55,7 @@ foreach ($scriptTags as $tag) {
 			if (preg_match("#^(http:|https:)?//#", $url)) {
 				$js .= httpGet($url);
 			} else {
-				$path = preg_replace("#/[\w.\-]*$#", "/", $src);
+				$path = preg_replace("#/[^/]*$#", "/", $src);
 				$js .= httpGet($path . $url);
 			}
 		} else {
@@ -66,6 +66,7 @@ foreach ($scriptTags as $tag) {
 		
 		file_put_contents($dirname . '/' . $file, $js);
 		exec('/usr/local/bin/jshint --config=/var/www/jshint/jshint.rc '. $dirname . '/' . $file, $res);
+#		exec("/usr/local/bin/jshint $dirname/$file 2>&1", $res);
 
 		// strip file system info, leaving just file name and message
 		$res = preg_replace('#^/tmp/JS_\w{5,10}/\w+.js: (.*)$#', '$1', $res);
