@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Hint</title>
+        <title>Check</title>
 		<link rel="shortcut icon" type="image/png" href="JS-logo.png" />
 		<link rel="stylesheet" type="text/css" href="style.css" />
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
@@ -70,7 +70,7 @@
 		<div class="num">1</div>
 		<div class="way">
 			Include this link on your page:<br />
-			<code><?= htmlspecialchars('<a href="http://mumstudents.org/jshint/referer.php"><img src="http://mumstudents.org/jshint/jshint-small.png" alt="js validator"/></a>')?></code>
+			<code><?= htmlspecialchars('<a href="http://mumstudents.org/jscheck/referer.php"><img src="http://mumstudents.org/jscheck/jscheck-small.png" alt="mumstudents JS check"/></a>')?></code>
 		</div>
 
 		<div class="num">2</div>
@@ -91,7 +91,7 @@
 	<div class="validate">
 		<a href="http://validator.w3.org/check/referer"><img src="http://mumstudents.org/cs472/2013-09/images/w3c-html.png" alt="html validator"/></a>
 		<a href="http://jigsaw.w3.org/css-validator/check/referer"><img src="http://mumstudents.org/cs472/2013-09/images/w3c-css.png" alt="css validator"/></a>
-		<a href="http://mumstudents.org/jshint/referer.php"><img src="http://mumstudents.org/jshint/jshint-small.png" alt="js validator"/></a>
+		<a href="http://mumstudents.org/jscheck/referer.php"><img src="http://mumstudents.org/jscheck/jscheck-small.png" alt="mumstudents JS check"/></a>
 	</div>
     </body>
 </html>
