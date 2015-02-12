@@ -1,6 +1,10 @@
 <?php
 // TODO work with uri's ending in .js 
-// TODO rework it so we can highlight multiple columns in one line
+
+$validator = filter_input(INPUT_GET, "v");
+if (!$validator) {
+	$validator = "jslint";
+}
 
 require_once("HTTP/Request.php");
 PEAR::setErrorHandling(PEAR_ERROR_EXCEPTION);
@@ -65,19 +69,37 @@ foreach ($scriptTags as $tag) {
 		$js = preg_replace("/\t/", "    ", $js);
 		
 		file_put_contents($dirname . '/' . $file, $js);
-		exec('/usr/local/bin/jshint --config=/var/www/jshint/jshint.rc '. $dirname . '/' . $file, $res);
-#		exec("/usr/local/bin/jshint $dirname/$file 2>&1", $res);
+		if ($validator === 'jshint') {
+            $regex = "/^line (\d+), col (\d+).*$/";
+			exec("/usr/local/bin/jshint --config=/var/www/jshint/jshint.rc $dirname/$file", $res, $exit);
 
-		// strip file system info, leaving just file name and message
-		$res = preg_replace('#^/tmp/JS_\w{5,10}/\w+.js: (.*)$#', '$1', $res);
+            // strip file system info, leaving just file name and message
+            $res = preg_replace('#^/tmp/JS_\w{5,10}/\w+.js: (.*)$#', '$1', $res);
+		} elseif ($validator === 'jslint') {
+            $regex = "#.* // Line (\d+), Pos (\d+)#";
+			exec("/usr/local/bin/jslint $dirname/$file", $res, $exit);
+
+            // get rid of the first two lines (containing filename)
+            array_shift($res);
+            array_shift($res);
+		} else {
+            $res[] = "Error: unknown validator selected";
+		}
+
+        if ($exit >= 3) {
+            $res[] = "Error: validation failed for $file $exit";
+        }
 
 		// create a list of line numbers on which errors were found
 		$lines = array();
 		foreach ($res as $line) {
-			if (preg_match("/^line \d+/", $line)) {
-				$nums = preg_replace("/^line (\d+), col (\d+).*$/", "\\1:\\2", $line);
+			if (preg_match($regex, $line)) {
+				$nums = preg_replace($regex, "\\1:\\2", $line);
 				list($row, $col) = explode(":", $nums);
-				$lines[$row] = $col;
+				if (!isset($lines[$row])) {
+					$lines[$row] = array();
+				}
+				$lines[$row][] = $col - 1;
 			}
 		}
 

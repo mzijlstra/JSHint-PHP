@@ -11,9 +11,6 @@
 			div.container {
 				margin: 0em 1em;
 			}
-			div#other {
-				line-height: 10px;
-			}
 			h2 {
 				margin-left: 1em;
 				margin-bottom: 0px;
@@ -49,17 +46,23 @@
 				width: 100%;
 				height: 250px;
 			}
-			div#result {
-				color: red;
-				padding-top: 20px;;
-			}
+            #result {
+                border: none;
+            }
 		</style>
     </head>
     <body>
 	<div class="header">
 		<img src="MUM-logo.png" alt="MUM logo" />
-		<h1>MUMStudents.org</h1>
-		<div id="other"><a href="http://jshint.com/about/"><img src="jshint.png" alt="JS Hint logo" height="50"/><br />more about jshint</a></div>
+        <h1>
+            <span>JS</span>Check 
+            <select name="v">
+                <option>jslint</option>
+                <option <?= $validator === "jshint" ? "selected" : "" ?>>jshint</option>
+            </select>
+        </h1>
+		<div class="other"><a href="http://www.jslint.com/lint.html">more about jslint</a></div>
+		<div class="other"><a href="http://jshint.com/about/">more about jshint</a></div>
 	</div>
 
 	<h2>3 Ways to Validate: </h2>
@@ -72,16 +75,17 @@
 
 		<div class="num">2</div>
 		<div class="way">
-			<form action="check.php">
+        <form action="check.php">
+            <input type="hidden" name="v" value="jslint" id="validator" />
 			<input placeholder="Paste a URL" id="uri" type="text" name="uri" />
 			<input type="submit" value="Validate" />
-			</form>
+        </form>
 		</div>
 		<div class="num">3</div>
         <div class="way">
             <textarea id="jsText" placeholder="Paste JavaScript"></textarea>
             <button id="check">Validate</button>
-            <div id="result"></div>
+            <div class="result" id="result"></div>
         </div>        
 	</div> <!-- closing container -->
 	<div class="validate">
