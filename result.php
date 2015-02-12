@@ -54,7 +54,7 @@
 			<?php if ($out['js']): ?>
 				<div class="js">
 				<?php for ($i = 0; $i < count($out['js']); $i++): ?>
-					<?php $line = $out['js'][$i]; ?>
+					<?php $line = $out['js'][$i] . " "; ?>
 						<?php if (!isset($out['lines'][$i + 1])) : ?>
 							<div class="line"><?= $i+1 ?></div>
 							<div>&nbsp;<?= htmlspecialchars($line) ?></div>
