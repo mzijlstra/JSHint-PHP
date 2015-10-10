@@ -77,7 +77,7 @@ foreach ($scriptTags as $tag) {
             $res = preg_replace('#^/tmp/JS_\w{5,10}/\w+.js: (.*)$#', '$1', $res);
 		} elseif ($validator === 'jslint') {
             $regex = "#.* // Line (\d+), Pos (\d+)#";
-			exec("/usr/local/bin/jslint $dirname/$file", $res, $exit);
+			exec("/usr/local/bin/jslint --browser --devel --vars --white $dirname/$file", $res, $exit);
 
             // get rid of the first two lines (containing filename)
             array_shift($res);
